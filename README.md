@@ -109,9 +109,58 @@ Publish the website in the given URL.
 </body>
 </html>
 ```
+views.py
+
+```
+from django.shortcuts import render
+def power_calculate(request):
+    context = {}
+    context['power'] = ""
+    context['I'] = ""
+    context['R'] = ""  
+
+    if request.method == 'POST':
+
+        I = float(request.POST.get('intensity', '0')) 
+
+        R = float(request.POST.get('resistance', '0')) 
+        
+        power = (I*I)*R
+       
+        context['power'] = f"{ power:.2f}"
+        
+        context['I'] = I
+        
+        context['R'] = R
+        
+        print(f"POST method is used")
+        print(f"request= {request}")
+        print(f"Intensity = {I}")
+        print(f"Resistance = {R}")
+        print(f"Power = {power}")
+       
+      
+    
+    return render(request, 'app1/app.html',context)
+```
+
+urls.py
+
+```
+from django.contrib import admin
+from django.urls import path
+from app1 import views
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('powerofbulb/',views.power_calculate,name="powerofbulb"),
+    path('',views.power_calculate,name="powerofbulb")
+]
+
+```
 # SERVER SIDE PROCESSING:
-# HOMEPAGE:
 ![alt text](<Screenshot 2024-11-24 152731.png>)
+# HOMEPAGE:
+
 ![alt text](<Screenshot 2024-12-01 135320.png>)
 # RESULT:
 The program for performing server side processing is completed successfully.
